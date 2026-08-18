@@ -1,0 +1,1038 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Research Scout — your guide to the session</title>
+<style>
+:root{
+  --teal:#1A5F5F; --teal-tint:#EBF4F4; --near-black:#141413; --cream:#F8F6F1;
+  --amber:#D47A3A; --mid-stone:#B0AEA5; --charcoal:#2D2D2D; --rule:#E2DFD7;
+  --head:"Poppins","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --body:"Lora",Georgia,"Times New Roman",serif;
+  --mono:"Menlo","Consolas","DejaVu Sans Mono",monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--cream); color:var(--charcoal);
+  font-family:var(--body); font-size:17px; line-height:1.62;
+  -webkit-text-size-adjust:100%;
+}
+.masthead{
+  background:var(--near-black); color:var(--cream);
+  padding:2.6rem 1.5rem 2.2rem;
+}
+.masthead .inner{max-width:74rem;margin:0 auto}
+.eyebrow{
+  font-family:var(--head); font-size:.72rem; font-weight:700;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--amber); margin:0 0 .7rem;
+}
+.masthead h1{
+  font-family:var(--head); font-weight:700; font-size:2.1rem;
+  line-height:1.18; margin:0 0 .6rem;
+}
+.masthead p{margin:0; color:#D9D5CC; font-size:1.02rem}
+.wrap{max-width:74rem; margin:0 auto; padding:0 1.5rem 5rem; display:flex; gap:2.6rem}
+nav.toc{
+  flex:0 0 15rem; position:sticky; top:1.5rem; align-self:flex-start;
+  max-height:calc(100vh - 3rem); overflow-y:auto; padding-top:2.2rem;
+  font-family:var(--head); font-size:.83rem; line-height:1.45;
+}
+nav.toc p{
+  font-weight:700; text-transform:uppercase; letter-spacing:.1em;
+  font-size:.68rem; color:var(--mid-stone); margin:0 0 .7rem;
+}
+nav.toc a{
+  display:block; padding:.3rem 0 .3rem .7rem; color:var(--charcoal);
+  text-decoration:none; border-left:2px solid var(--rule);
+}
+nav.toc a:hover{color:var(--teal); border-left-color:var(--teal); background:var(--teal-tint)}
+main{flex:1 1 auto; min-width:0; padding-top:2.2rem}
+h2{
+  font-family:var(--head); font-weight:700; color:var(--teal);
+  font-size:1.5rem; line-height:1.25; margin:2.9rem 0 .9rem;
+  padding-top:1.4rem; border-top:1px solid var(--rule); scroll-margin-top:1rem;
+}
+main > h2:first-child{border-top:none; padding-top:0; margin-top:0}
+h3{
+  font-family:var(--head); font-weight:600; color:var(--near-black);
+  font-size:1.12rem; margin:2rem 0 .6rem;
+}
+h4{font-family:var(--head); font-weight:600; font-size:1rem; margin:1.5rem 0 .5rem}
+p{margin:0 0 1rem}
+ul,ol{margin:0 0 1.1rem; padding-left:1.3rem}
+li{margin:.35rem 0}
+li::marker{color:var(--teal)}
+strong{color:var(--near-black)}
+a{color:var(--teal)}
+code{
+  font-family:var(--mono); font-size:.86em; background:var(--teal-tint);
+  color:var(--near-black); padding:.1em .34em; border-radius:3px;
+}
+pre{
+  background:var(--near-black); color:var(--cream); border-radius:8px;
+  padding:1.05rem 1.2rem; margin:0 0 1.3rem;
+  font-size:.8rem; line-height:1.55;
+  /* Prompts are prose, not code. Wrap long lines instead of making the
+     reader scroll sideways; short aligned lines are unaffected. */
+  white-space:pre-wrap; overflow-wrap:anywhere; overflow-x:auto;
+}
+pre code{background:none; color:inherit; padding:0; font-size:1em; white-space:inherit}
+table{
+  border-collapse:collapse; width:100%; margin:0 0 1.4rem;
+  font-size:.94rem; display:block; overflow-x:auto;
+}
+th{
+  background:var(--teal); color:#fff; font-family:var(--head); font-weight:600;
+  text-align:left; padding:.6rem .8rem; font-size:.88rem;
+}
+td{padding:.6rem .8rem; border-bottom:1px solid var(--rule); vertical-align:top}
+tbody tr:nth-child(even){background:var(--teal-tint)}
+blockquote{
+  margin:0 0 1.3rem; padding:.2rem 0 .2rem 1.1rem;
+  border-left:3px solid var(--amber); color:#4A4A4A; font-style:italic;
+}
+hr{border:none; border-top:1px solid var(--rule); margin:2.4rem 0}
+.foot{
+  max-width:74rem; margin:0 auto; padding:1.6rem 1.5rem 3rem;
+  border-top:1px solid var(--rule); color:var(--mid-stone);
+  font-family:var(--head); font-size:.78rem;
+}
+@media (max-width:860px){
+  .wrap{display:block; padding-bottom:3rem}
+  nav.toc{position:static; max-height:none; width:auto; padding-bottom:1.4rem;
+          border-bottom:1px solid var(--rule); margin-bottom:1rem}
+  nav.toc a{display:inline-block; border-left:none; padding:.25rem .6rem .25rem 0}
+  body{font-size:16px}
+}
+@media print{
+  body{background:#fff; font-size:10.5pt}
+  .masthead{background:#fff; color:#000; padding:0 0 1rem; border-bottom:2px solid var(--teal)}
+  .masthead .eyebrow{color:var(--teal)}
+  .masthead p{color:#333}
+  nav.toc{display:none}
+  .wrap{display:block; max-width:none; padding:0}
+  h2{page-break-after:avoid; break-after:avoid}
+  pre,table,blockquote{page-break-inside:avoid; break-inside:avoid}
+  pre{background:#f4f2ec; color:#000; border:1px solid #ccc; font-size:8.5pt}
+  th{background:#e6efef; color:#000}
+  a{color:#000; text-decoration:none}
+}
+</style>
+</head>
+<body>
+  <header class="masthead">
+    <div class="inner">
+      <p class="eyebrow">Research Scout</p>
+      <h1>Research Scout — your guide to the session</h1>
+      <p>Keep this open while you work. You do not need to read it before the session.</p>
+    </div>
+  </header>
+  <div class="wrap">
+    <nav class="toc">
+      <p>Contents</p>
+      <a href="#1-what-you-will-build">1. What you will build</a>
+      <a href="#2-what-you-will-be-able-to-do-by-the-end">2. What you will be able to do by the end</a>
+      <a href="#3-words-used-in-this-session">3. Words used in this session</a>
+      <a href="#4-before-the-session">4. Before the session</a>
+      <a href="#5-your-repository">5. Your repository</a>
+      <a href="#6-the-five-prompts">6. The five prompts</a>
+      <a href="#7-how-much-freedom-should-your-agent-have">7. How much freedom should your agent have?</a>
+      <a href="#8-one-real-run-annotated">8. One real run, annotated</a>
+      <a href="#9-what-you-submit">9. What you submit</a>
+      <a href="#10-if-something-goes-wrong">10. If something goes wrong</a>
+    </nav>
+    <main>
+<h2 id="1-what-you-will-build">1. What you will build</h2>
+<p>You will build a <strong>research agent</strong>. It is one Python file, and you will write it by giving
+instructions to OpenCode Zen.</p>
+<p>You give the agent a research question. The agent then decides what to search for, searches the web,
+reads pages, decides whether it has enough information, and writes a short research brief with sources.</p>
+<p>You will use your own research question, not an example question. At the end of the session you will
+have a working program you can use again.</p>
+<hr />
+<h2 id="2-what-you-will-be-able-to-do-by-the-end">2. What you will be able to do by the end</h2>
+<p><strong>1. Explain how your agent decides what to do next.</strong> You will be able to look at your own code and
+say why the agent chose one action instead of another.</p>
+<p><strong>2. Decide how much freedom your agent should have.</strong> You will weigh what you gain by letting it act
+on its own against what happens when it gets something wrong, decide what it may do unsupervised, and
+change your code so that it matches your decision.</p>
+<p><strong>3. Read what your agent actually did.</strong> You will read your own trace and say which pages it opened,
+which it only listed, and whether the report it wrote is supported by what it read.</p>
+<hr />
+<h2 id="3-words-used-in-this-session">3. Words used in this session</h2>
+<p>Keep this section open. You do not need to memorise these words. Look them up when you need them.</p>
+<h3>The seven parts of an agent</h3>
+<table>
+<thead>
+<tr>
+<th>Part</th>
+<th>What it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Model</strong></td>
+<td>The part that decides what to do next.</td>
+</tr>
+<tr>
+<td><strong>Goal</strong></td>
+<td>The research question you gave it.</td>
+</tr>
+<tr>
+<td><strong>Tools</strong></td>
+<td>The actions the agent is allowed to take.</td>
+</tr>
+<tr>
+<td><strong>State</strong></td>
+<td>The record of every step so far in this run. The model has no memory of its own, so your program sends the whole record back on every step.</td>
+</tr>
+<tr>
+<td><strong>Loop</strong></td>
+<td>The code that asks the model, acts, looks at the result, and asks again.</td>
+</tr>
+<tr>
+<td><strong>Stop condition</strong></td>
+<td>The rule that ends the run, whether the agent has finished or not.</td>
+</tr>
+<tr>
+<td><strong>Evaluation</strong></td>
+<td>How you check whether the agent behaved the way you wanted.</td>
+</tr>
+</tbody>
+</table>
+<h3>Your three tools</h3>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>search_web(query)</code></td>
+<td>Searches the web and returns a list of results.</td>
+</tr>
+<tr>
+<td><code>read_webpage(url)</code></td>
+<td>Opens one web page and returns the text on it.</td>
+</tr>
+<tr>
+<td><code>finish(report)</code></td>
+<td>Ends the run and writes the research brief.</td>
+</tr>
+</tbody>
+</table>
+<p>If an action is not in this list, your agent cannot take it. Adding a new capability later means adding
+a new tool.</p>
+<h3>Two more words you will hear</h3>
+<p><strong>Observation.</strong> The result that comes back after the agent uses a tool. If the agent searches, the
+observation is the list of search results.</p>
+<p><strong>Trace.</strong> The printed record of everything the agent did, step by step. You will read your own trace
+several times.</p>
+<h3>The loop has a name: ReAct</h3>
+<p>The loop you are building comes from a 2022 research paper. The name joins two words, <strong>reason</strong> and
+<strong>act</strong>, and the cycle has three steps:</p>
+<ol>
+<li><strong>Reason</strong> about what you still need to know</li>
+<li><strong>Act</strong> by using one of your tools</li>
+<li><strong>Observe</strong> the result your tool sends back</li>
+</ol>
+<p>Then repeat, until you have enough evidence to answer.</p>
+<p>Almost every AI agent framework you will meet later is built on this shape, so it is worth searching
+for the term afterwards. The paper is Yao et al. (2022), <em>ReAct: Synergizing Reasoning and Acting in
+Language Models</em>, at <a href="https://arxiv.org/abs/2210.03629">arxiv.org/abs/2210.03629</a>.</p>
+<h3>The two questions</h3>
+<p>Ask these about any task you might hand to an AI.</p>
+<ol>
+<li><strong>What is the benefit of letting the AI do this on its own?</strong> This tells you what you gain.</li>
+<li><strong>What is the worst thing that happens if it gets this wrong?</strong> This decides how much freedom it should have.</li>
+</ol>
+<p>The second question is the one that decides. Knowing the benefit alone never tells you how much freedom
+to give something.</p>
+<hr />
+<h2 id="4-before-the-session">4. Before the session</h2>
+<p>Three things.</p>
+<p><strong>1. Create an OpenCode Zen API key.</strong> Go to <a href="https://opencode.ai/auth">opencode.ai/auth</a>, sign in, and
+create an API key. This takes about a minute and it is free. No card is needed.</p>
+<p>The key that signs you in to the VS Code extension is not the same thing as an API key. You need to
+create the API key separately, and you will paste it into a file on your own machine.</p>
+<p>Two important points about your key:</p>
+<ul>
+<li>Your key is a password. Anyone who has it can spend on your account. Never paste it into the class
+  chat, and never put it in a file you push to your repository.</li>
+<li>If an error message ever shows your key, treat that key as no longer safe. Delete it and create a new
+  one. This takes a minute and costs nothing.</li>
+</ul>
+<p>You will use OpenCode Zen in two different ways, at two different times.</p>
+<table>
+<thead>
+<tr>
+<th>When</th>
+<th>What is happening</th>
+<th>Who talks to it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>While you build</td>
+<td>OpenCode Zen writes your code</td>
+<td>You, by typing prompts</td>
+</tr>
+<tr>
+<td>When your program runs</td>
+<td>OpenCode Zen answers your program</td>
+<td>Your <code>research_agent.py</code></td>
+</tr>
+</tbody>
+</table>
+<p>The model that writes your code and the model inside your program are different models, chosen for
+different jobs. Your program will use <code>hy3-free</code>, which is reliable at replying in the exact format the
+loop needs.</p>
+<p><strong>Your three settings.</strong> Prompt 1 asks for a file called <code>.env</code> holding three lines. Two of them are the
+same for everyone in the class. The third is your own key, and only you ever see it.</p>
+<pre><code class="language-text">API_BASE_URL=https://opencode.ai/zen/v1
+API_KEY=paste-your-own-key-here
+MODEL=hy3-free
+</code></pre>
+<p>Create this file in your project folder before you start, or as soon as prompt 1 asks for it. Three
+things to watch:</p>
+<ul>
+<li>The file is called <code>.env</code> exactly, with the dot and no extension. Some editors add <code>.txt</code> without
+  telling you.</li>
+<li>No quotation marks and no spaces around the <code>=</code> sign.</li>
+<li>Never commit <code>.env</code>, and never paste it into the class chat. Your <code>.gitignore</code> already excludes it.</li>
+</ul>
+<p>If the model name stops working during the week, the free models change from time to time. Ask in the
+class chat and change the one line.</p>
+<p><strong>2. Answer this question in one or two sentences.</strong> What do you think an AI agent is? What makes it
+different from a chatbot? There is no right answer. Your answer helps in planning the session.</p>
+<p><strong>3. Bring one research question from your own work.</strong> This choice matters more than it looks, so take a
+moment over it.</p>
+<p><strong>Your question must need information the AI model cannot already know.</strong> The model has read an enormous
+amount of text. If your question is about general knowledge, the model will answer it from memory, do one
+search to look busy, and stop. You will have built an agent and never seen it work.</p>
+<p>Ask for something the model has no way of knowing: current prices, a recent change, specific numbers, or
+a comparison that needs real evidence about each option.</p>
+<p>Examples of questions that work well:</p>
+<ul>
+<li>What is the price of gold today, and what moved it over the past month? (This is the one used as the
+  worked example in section 8, so you can compare your run against it.)</li>
+<li>Which of three note-taking tools should our team choose for sharing meeting notes, what does each cost
+  today, and which would you recommend?</li>
+<li>What are the current entry requirements and fees for this course at three different providers?</li>
+<li>How have organisations in my sector handled AI in hiring since the rules changed, and what should we do?</li>
+</ul>
+<p>Examples of questions that will not work:</p>
+<ul>
+<li>What is the capital of Malaysia? (One fact, one source.)</li>
+<li>Is AI good? (Too broad to research.)</li>
+<li>What is machine learning? (The model already knows this and will answer from memory.)</li>
+</ul>
+<p>A quick test: if a knowledgeable colleague could answer your question well without looking anything up,
+the model can too, and your agent may barely run before deciding it is finished.</p>
+<p>Please also open VS Code with OpenCode Zen once before the session and check that it responds. This
+takes one minute. It confirms your login is still active.</p>
+<hr />
+<h2 id="5-your-repository">5. Your repository</h2>
+<p>Everything you produce goes into your own repository.</p>
+<p>Create a repository called <code>research-scout</code>. It should end up with this structure:</p>
+<pre><code class="language-text">research-scout/
+├── research_agent.py     the program you build
+├── requirements.txt      the packages your program needs
+├── .env.example          the settings someone else would need, with no values
+└── .gitignore            must contain the line .env
+</code></pre>
+<p><strong>Do not put your <code>.env</code> file in the repository.</strong> It contains your key. Add a <code>.gitignore</code> file with the
+line <code>.env</code> in it before your first commit.</p>
+<p><code>requirements.txt</code> and <code>.env.example</code> are how someone else can run your program. Between them they say
+what to install and what to configure, without revealing your key. Your program is only reusable if both
+are there.</p>
+<p>For work you rely on, you would also record the version of each package, for example <code>ddgs==9.6.0</code>
+rather than <code>ddgs</code>. Versions change, and code that worked last month can stop working when a package
+updates underneath it. Names alone are enough here.</p>
+<h3>What you asked for, and what you got</h3>
+<p>You describe what you want. The model decides everything you did not mention. Those unmentioned
+decisions are where most of the real choices are made, and some of them matter a great deal.</p>
+<p>Here is a real example from this program. A prompt asked only for a function that "returns a short list
+of search results". The model then decided, without being asked, which search service to use, how to
+reach it, how many results to return, what shape to return them in, and where to put the API key. One of
+those decisions put the key somewhere it could be read by other people. Nobody asked for that, and
+nobody would have noticed it without reading the code.</p>
+<p>So it is worth naming three decisions the model made that your prompt did
+not ask for, and to say whether you would have made the same choice.</p>
+<p>You can fill this in at any point once you have code to read. It is easier if you write each one down
+when you notice it, rather than looking for three at the end.</p>
+<p>This is not a test of whether you used AI. You are expected to use it. It is practice in the job you
+will actually be doing: approving work that a machine produced and you are responsible for.</p>
+<h3>Save your terminal output</h3>
+<p>Your terminal output is what you submit, so keep it from the moment you start.</p>
+<p>Copy everything your terminal shows after each prompt — the checkpoint test you ran and what it printed —
+into one plain text file. Add to the same file as you go, rather than starting a new one each time.</p>
+<p>If you prefer to capture the final run directly, this also works:</p>
+<pre><code class="language-bash">python3 research_agent.py --eval | tee final_run.txt
+</code></pre>
+<p>If <code>python3</code> is not found on your machine, try <code>python</code>. One of the two will work.</p>
+<h3>Commit at each checkpoint</h3>
+<p>Commit and push after each of the four checkpoints. This takes a few seconds and it records the order in
+which you did the work.</p>
+<pre><code class="language-bash">git add .
+git commit -m &quot;checkpoint 1&quot;
+git push
+</code></pre>
+<p>You can do the same thing with the buttons in the Source Control panel in VS Code, if you prefer.</p>
+<h3>Telling the class where you are</h3>
+<p>There is no shared spreadsheet. Two signals only:</p>
+<ul>
+<li><strong>When you reach a checkpoint</strong>, post its number in the chat: <code>CP1</code>, <code>CP2</code>, <code>CP3</code>, <code>CP4</code>. This is how
+  the instructor sees how the class is progressing, because nobody can see your screen.</li>
+<li><strong>When you are stuck</strong>, click <strong>Ask for Help</strong> in your team room. Someone will join you. Do this early
+  rather than late. Being stuck for twenty minutes helps nobody, and it is not a mark against you.</li>
+</ul>
+<hr />
+<h2 id="6-the-five-prompts">6. The five prompts</h2>
+<p>Give these to OpenCode Zen <strong>one at a time, in order</strong>. After each one, check that the code does what
+the checkpoint says. Then commit your work and post the checkpoint number in the chat.</p>
+<p>If the code does not work, describe the problem to OpenCode Zen in your own words. Do not paste the same
+prompt again.</p>
+<p>Do not combine the prompts into one. A long prompt produces more code than you can read, and reading
+your own code is the main point of this session.</p>
+<p>Prompts 1 to 4 build an agent that runs. Prompt 5 is the one that makes it research properly, and its
+effect is what your final run has to show.</p>
+<h3>What each prompt delivers</h3>
+<table>
+<thead>
+<tr>
+<th>Prompt</th>
+<th>What it delivers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>A program that can ask the model</td>
+</tr>
+<tr>
+<td>2</td>
+<td>A search tool and a page reader</td>
+</tr>
+<tr>
+<td>3</td>
+<td>A loop, and the state it builds up</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Five checks that score the run</td>
+</tr>
+<tr>
+<td>5</td>
+<td>An agent that reads before it reports</td>
+</tr>
+</tbody>
+</table>
+<h3>Where the seven parts come from</h3>
+<p>Section 3 listed the seven parts every agent has. Between them, these five prompts produce all seven.
+When you are reading your own file and cannot find something, this table tells you which prompt made it.</p>
+<table>
+<thead>
+<tr>
+<th>Part</th>
+<th>Which prompt delivers it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Model</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Goal</td>
+<td>1, the question you type</td>
+</tr>
+<tr>
+<td>Tools</td>
+<td>2</td>
+</tr>
+<tr>
+<td>State</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Loop</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Stop condition</td>
+<td>3 sets the step limit, 5 adds the three-page rule</td>
+</tr>
+<tr>
+<td>Evaluation</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+<p>State is not something a prompt adds as a separate part. It is a plain Python list that the loop appends
+to, which is why it arrives with the loop rather than on its own.</p>
+<h3>Prompt 1 — the program</h3>
+<pre><code class="language-text">Create a beginner-friendly Python command-line program called research_agent.py.
+
+It should ask the user for a research question and print it back.
+
+Read three settings from a .env file: API_BASE_URL, API_KEY and MODEL. If any one of them
+is missing, print which one is missing and stop. Do not guess a model name.
+
+Call the model over plain HTTP, using the OpenAI-compatible chat completions format:
+
+  POST to API_BASE_URL + &quot;/chat/completions&quot;
+  Body: {&quot;model&quot;: &lt;MODEL&gt;, &quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &lt;the prompt&gt;}]}
+  The reply text is at choices[0].message.content
+
+Send the key in an Authorization header as &quot;Bearer &lt;API_KEY&gt;&quot;. Never put the key in the URL.
+
+Send a browser-style User-Agent header. Without one the service returns 403 with error
+code 1010 and refuses the request.
+
+Give every request a timeout of 60 seconds.
+
+When a request fails, print what actually went wrong: the error type, the message, and the
+response body if there is one. Never replace an error with a generic message, and never
+print the request URL.
+
+If a request fails with 429, you are being rate limited. If the response carries a
+Retry-After header, wait that long, otherwise wait two seconds. Print how long you are
+waiting and why. Retry up to three times. If a request fails with a 5xx error, wait two
+seconds and retry.
+
+If the reply does not contain choices[0].message.content, print the whole response body and
+stop with a clear message.
+
+Also create a .env.example file listing the three variable names with empty values, so
+someone else can see what to set without seeing my key.
+
+Keep the program itself in one file.
+
+Do not use LangChain, LangGraph, CrewAI or any other agent framework.
+</code></pre>
+<p><strong>What this prompt is doing</strong></p>
+<table>
+<thead>
+<tr>
+<th>What you ask for</th>
+<th>What it gives you</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Read <code>API_BASE_URL</code>, <code>API_KEY</code> and <code>MODEL</code> from <code>.env</code>, and stop if one is missing</td>
+<td>Your settings live outside the code, so changing model later is not editing the program. And a typo in <code>.env</code> tells you which line is wrong instead of failing somewhere confusing.</td>
+</tr>
+<tr>
+<td>Send the key in an <code>Authorization</code> header, never in the URL</td>
+<td>A key placed in the URL appears in every error message. That is the commonest way somebody publishes a working key by pasting an error into a chat.</td>
+</tr>
+<tr>
+<td>Send a browser-style <code>User-Agent</code></td>
+<td>Every program that calls a service sends a short line saying what kind of program it is. Python's marks it as a script, and the service refuses scripts before it looks at anything else.</td>
+</tr>
+<tr>
+<td>Print the error type, the message and the response body</td>
+<td>One general message like "something went wrong" cannot tell you whether your key is wrong, the service is busy, or you asked too often. Those need three different responses from you.</td>
+</tr>
+<tr>
+<td>When the service replies <code>429</code>, wait as long as it asks</td>
+<td><code>429</code> means you have asked too many times too quickly. Trying again straight away uses up requests that were never going to work.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Checkpoint 1:</strong> The program runs. It asks for your question and prints it back.</p>
+<h3>Prompt 2 — the tools</h3>
+<pre><code class="language-text">Add two functions to the program:
+
+1. search_web(query) - returns up to 5 search results, each with a title, a URL and a
+   snippet. Use the ddgs library (pip install ddgs). It needs no API key.
+2. read_webpage(url) - fetches one page with requests, strips the HTML with
+   beautifulsoup4, and returns the visible text capped at 2000 characters.
+
+Send a browser-style User-Agent header with every page request. Many websites refuse
+requests that identify themselves as a script.
+
+Keep each one an ordinary Python function. Write a clear one-sentence description of each,
+in a form an LLM could use to decide which one to call.
+
+If a search or a page fetch fails, print the status code and the URL, and return an empty
+result. Do not stop the program.
+
+Add a way to run each function on its own from the command line so I can test them
+separately.
+
+Finally, create a requirements.txt listing every package my program needs, one per line.
+List only the packages I import directly, not the packages those packages depend on.
+</code></pre>
+<p><strong>What this prompt is doing</strong></p>
+<table>
+<thead>
+<tr>
+<th>What you ask for</th>
+<th>What it gives you</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>search_web(query)</code> and <code>read_webpage(url)</code></td>
+<td>These two functions are the only ways your agent can touch the world. Anything not in this list, it cannot do.</td>
+</tr>
+<tr>
+<td>A clear one-sentence description of each</td>
+<td>This description is what the model actually sees. It never sees the code inside your functions, so the sentence <em>is</em> the tool as far as it is concerned.</td>
+</tr>
+<tr>
+<td>Page text capped at 2000 characters</td>
+<td>Web pages can be enormous. Without a cap, one page fills the whole request and there is no room for anything else.</td>
+</tr>
+<tr>
+<td>A browser-style <code>User-Agent</code> on page requests</td>
+<td>Many websites refuse anything that looks like a script. Without this line your agent cannot read anything, and it will write its report from search results alone.</td>
+</tr>
+<tr>
+<td>A <code>requirements.txt</code></td>
+<td>Somebody else can install what your program needs and run it. Your instructor, reading your submission, is that somebody.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Checkpoint 2:</strong> You can run each tool on its own, using your own research question, and you get
+sensible results.</p>
+<h3>Prompt 3 — the loop</h3>
+<pre><code class="language-text">Turn the program into a tool-using agent with an explicit loop.
+
+Put the step limit in a constant at the top of the file and set it to 6. Use that constant
+wherever the step limit appears, including in the prompt text sent to the model. The number
+the model is told must always be the number the program enforces.
+
+On each step, send the model the goal, a description of the three tools, and everything
+that has happened so far. Ask it to reply with only a JSON object, in one of these shapes:
+
+{&quot;reason&quot;: &quot;one short sentence&quot;, &quot;action&quot;: &quot;SEARCH&quot;, &quot;query&quot;: &quot;...&quot;}
+{&quot;reason&quot;: &quot;one short sentence&quot;, &quot;action&quot;: &quot;READ&quot;,   &quot;url&quot;: &quot;...&quot;}
+{&quot;reason&quot;: &quot;one short sentence&quot;, &quot;action&quot;: &quot;FINISH&quot;, &quot;report&quot;: &quot;...&quot;}
+
+Parse that JSON. If the reply is wrapped in markdown code fences, remove them first.
+If parsing still fails, print the raw reply and stop with a clear message.
+
+Execute the chosen action. Append the action and its result to a state list, and pass the
+whole state to the model on the next step.
+
+Print the step number, the reason, the action, and a short summary of the observation.
+
+Web page text is often full of navigation and menus. Do not assume it is clean.
+
+When the action is FINISH, print a research brief with sections for the question, the
+findings, the comparison, the recommendation, and the sources.
+
+If the step limit runs out before FINISH, say so clearly.
+
+A failed search, or a page that will not load, is normal. Record what happened in the state
+so the model can see it on the next step, and let the agent choose again. Do not exit the
+program on the first failure.
+
+Do not use an agent framework.
+</code></pre>
+<p><strong>What this prompt is doing</strong></p>
+<table>
+<thead>
+<tr>
+<th>What you ask for</th>
+<th>What it gives you</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>An explicit loop, with the step limit in a constant</td>
+<td>The number the model is told is always the number your program enforces. Write the number by hand in two places and they drift apart the first time you change one.</td>
+</tr>
+<tr>
+<td>A reply that is only a JSON object, in one of three shapes</td>
+<td>This is the contract between the two halves of your program. The model writes the JSON, and your code reads it. Everything else in the loop depends on that shape holding.</td>
+</tr>
+<tr>
+<td>Append each action and its result to a state list</td>
+<td>This is where state gets built. The model remembers nothing between steps, so this list is the only memory the run has.</td>
+</tr>
+<tr>
+<td>Remove the ``` marks a model may wrap its reply in</td>
+<td>Models often add formatting around a reply. Your program cannot read JSON with those marks still attached.</td>
+</tr>
+<tr>
+<td>Record a failed search or an unreadable page, and carry on</td>
+<td>Pages fail to load all the time. Without this, one bad moment at step four throws away the four steps before it.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Checkpoint 3:</strong> The agent answers your question from beginning to end, and you can see every step it
+took.</p>
+<h3>Prompt 4 — the checks</h3>
+<pre><code class="language-text">Add an evaluation mode, run as: python research_agent.py --eval
+
+Check five things about a completed run, and print PASS or FAIL with a total score:
+
+1. the search tool was used at least once;
+2. more than one distinct source was consulted;
+3. the run stayed within the step limit;
+4. the brief contains a recommendation;
+5. the brief lists at least three sources.
+
+The checks should read the run's state and output, not the model's opinion of itself.
+</code></pre>
+<p><strong>What this prompt is doing</strong></p>
+<table>
+<thead>
+<tr>
+<th>What you ask for</th>
+<th>What it gives you</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>An <code>--eval</code> mode with five checks</td>
+<td>A way to measure a run rather than judge it by reading it and forming an impression.</td>
+</tr>
+<tr>
+<td>Checks that read the run's state and output</td>
+<td>A model asked to mark its own work will nearly always say it did well. These checks look at what happened instead of asking.</td>
+</tr>
+<tr>
+<td>Check 2: more than one distinct source consulted</td>
+<td>You decide what "consulted" means. Counting the URLs listed in the brief is easier to write. Counting the pages actually opened is harder and more honest. Your choice decides what your own score is worth.</td>
+</tr>
+<tr>
+<td>PASS or FAIL for each, and a total score</td>
+<td>A number you can compare between one run and the next, which is what makes a change measurable.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Checkpoint 4:</strong> Running <code>python3 research_agent.py --eval</code> prints five results and a score.</p>
+<h3>Prompt 5 — make it research properly</h3>
+<p>Run your agent at least once before you give it this prompt. Seeing what it does without these rules is
+what makes the rules worth having.</p>
+<pre><code class="language-text">Improve the agent so that its report is built from pages it actually read.
+
+1. Read more of each page.
+
+Raise the page text limit in read_webpage from 2000 to 5000 characters.
+
+2. Change what the model is told about FINISH.
+
+In the tool descriptions that go into the prompt, replace the FINISH description with:
+
+  FINISH  Write the report. Only choose this after you have read at least three
+          different web pages. Base the report on the text of those pages. Search
+          result titles and snippets are not enough on their own. Price tickers,
+          shop pages and product listings give you a number but no explanation, so
+          prefer news articles, analysis and official sources when you choose what
+          to read.
+
+3. Add a rule the model cannot talk its way past.
+
+Before the program accepts a FINISH action, count how many different pages the agent has
+read successfully.
+
+If it is fewer than three, do not accept the report. Add a note to the state saying how
+many were read, that three are required, and that it should choose READ next. Print that
+FINISH was refused, then continue the loop.
+
+If it is three or more, accept it: print the research brief and end the run.
+
+If the report is empty, refuse it the same way and say so.
+
+Do not let the agent read the same URL twice. If it asks for one it has already read,
+refuse that too and put a note in the state.
+
+4. Give it room to do that.
+
+Raise the step limit constant from 6 to 8.
+
+5. Say where each finding came from.
+
+Ask the model to end every finding with the URL it came from, in square brackets. If a
+finding comes from what the model already knew rather than from a page it read, it must
+end with [no source] instead.
+
+6. Print an honest source list.
+
+In the research brief, replace the single Sources list with two lists, neither containing
+repeats:
+
+  Pages read    the URLs the agent opened and got text back from
+  Also found    the URLs that appeared in search results but were never opened
+
+A page that failed to load is not a source. Do not list it under either heading.
+
+Keep everything in one file. Do not use an agent framework.
+</code></pre>
+<p><strong>What this prompt is doing</strong></p>
+<table>
+<thead>
+<tr>
+<th>What you ask for</th>
+<th>What it gives you</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Only finish after reading three different pages</td>
+<td>This sentence goes into the tool description, so the model is <strong>told</strong> to read three pages.</td>
+</tr>
+<tr>
+<td>The program refuses <code>FINISH</code> before three pages</td>
+<td>This goes into the loop, so the model <strong>cannot</strong> ignore it. Read this row against the one above: a description is a request, and a rule in your code is not.</td>
+</tr>
+<tr>
+<td>Prefer news and analysis over price tickers and shop pages</td>
+<td>Source quality becomes part of the instruction. Without it the agent happily opens a shop page, gets a menu, and reports anyway.</td>
+</tr>
+<tr>
+<td>End every finding with its URL, or with <code>[no source]</code></td>
+<td>A reader can check a claim instead of having to trust it. This is the single change that makes your brief reviewable by someone else.</td>
+</tr>
+<tr>
+<td>Two source lists: pages read, and links only found</td>
+<td>Your brief stops claiming sources it never opened. Before this change, a link the agent glanced at in a search result looked exactly like one it had read.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Checkpoint 5:</strong> The run reads three pages before it reports, every finding ends with a URL, and the
+brief prints two separate source lists.</p>
+<hr />
+<h2 id="7-how-much-freedom-should-your-agent-have">7. How much freedom should your agent have?</h2>
+<p>By this point your agent does four things on its own. It decides what to search for. It searches without
+asking you. It opens web pages that nobody has checked. It decides for itself when it has enough
+information.</p>
+<p>Ask these two questions about your own agent before you decide.</p>
+<p><strong>Question 1: What is the benefit of letting the agent do this on its own?</strong>
+This tells you what you gain.</p>
+<p><strong>Question 2: What is the worst thing that happens if it gets this wrong?</strong>
+This decides how much freedom it should have.</p>
+<p>Then answer the question those two lead to: <strong>what should your agent be allowed to do on its own, and
+what should it have to stop and ask you about?</strong></p>
+<h3>When no answer feels comfortable</h3>
+<p>You may find that every answer is wrong. Letting it run is too risky, and checking every step makes it
+useless. This is normal, and it means you are asking the right question.</p>
+<p>When this happens, <strong>change one thing about the task until an answer becomes comfortable.</strong> You do not
+have to accept the task as it is. You wrote the code, so you can change it.</p>
+<p>Here are changes you can make in ten minutes:</p>
+<ul>
+<li>Raise the number of pages it must read before it can finish, from three to five.</li>
+<li>Limit <code>search_web</code> to a list of websites you trust.</li>
+<li>Reduce the maximum number of steps.</li>
+<li>Make <code>read_webpage</code> open only pages that came from your own search results.</li>
+<li>Add a sixth check that fails the run if any finding ends with <code>[no source]</code>.</li>
+<li>Record every step in a log file, so you can check the run afterwards.</li>
+</ul>
+<p>You do not have to make any of these changes. They are here so you can see that the amount of freedom
+an agent has is something you set, not something the agent decides.</p>
+<h3>The lethal trifecta</h3>
+<p>Three things must not meet in the same system:</p>
+<ol>
+<li><strong>Private data.</strong> It can read your files, your email, your customer records.</li>
+<li><strong>Untrusted content.</strong> It reads web pages and documents that nobody has checked.</li>
+<li><strong>A way to send data out.</strong> It can make a web request, call an interface, or send an email.</li>
+</ol>
+<p>Any two of these are manageable. With all three, a hidden instruction inside a page it was asked to read
+can tell it to collect your data and send it to a stranger. The agent cannot tell that instruction apart
+from yours.</p>
+<p>The agent you are building has the last two. It reads pages nobody has checked, and it can send requests
+out. It has no access to your private data, and the feature that would give it access — letting it read
+your documents or your email — is the one people ask for first.</p>
+<p>This name is Simon Willison's, and it is worth searching for after the session.</p>
+<p>Your agent holds the first two. It acts on its own, and it reads pages that nobody has checked. It does
+not yet hold the third.</p>
+<p>Now think about the feature you will most likely want to add next: a tool that reads your email. That
+would give your agent the third one.</p>
+<p>If you need to remove one of the three, the way to do it is the change you have just made. You take
+something away from what the agent is allowed to do on its own.</p>
+<p>This idea has a name. It is called the <strong>lethal trifecta</strong>, and it is worth searching for after the
+session. It applies to every AI system you will be asked to approve at work, not only to the one you
+built here.</p>
+<hr />
+<h2 id="8-one-real-run-annotated">8. One real run, annotated</h2>
+<p>This trace is real. It comes from the finished agent — the one you will have after prompt 5 — on the
+question <strong>"what is the price of gold today, and what moved it over the past month?"</strong>, captured on
+18 August 2026.</p>
+<h3>What it did</h3>
+<pre><code class="language-text">STEP 1  SEARCH  &quot;gold price today past month movement factors&quot;  → 5 results
+STEP 2  READ    tradingeconomics.com          → 5000 characters
+STEP 3  READ    gold.org                      → 3256 characters
+STEP 4  READ    goldprice.org                 → 0 characters   (refused)
+STEP 5  READ    kitco.com                     →  867 characters
+STEP 6  FINISH
+
+Score: 5 of 5
+</code></pre>
+<p>Six steps of eight. Four pages attempted, three read. Nobody told it which ones to open.</p>
+<p><strong>Your run will not look like this.</strong> Nobody chose these four sites. The search returned them and the
+model picked from what came back, so your agent will open different pages, in a different order, even on
+the same question. A trace is evidence about one run. It is not a description of what a correct run looks
+like, and yours is not wrong for being different.</p>
+<h3>What the brief looked like</h3>
+<p>Each finding ended with the page it came from:</p>
+<pre><code class="language-text">Gold spot price is around $4,403–$4,405 per troy ounce as of Aug 17–18, 2026
+[https://www.kitco.com/charts/historicalgold.html]
+[https://tradingeconomics.com/commodity/gold]
+
+Over the past month gold has risen roughly 9.9%
+[https://tradingeconomics.com/commodity/gold]
+</code></pre>
+<p>And the sources came in two lists rather than one:</p>
+<pre><code class="language-text">Pages read:                    Also found, not opened:
+  tradingeconomics.com           goldavenue.com
+  gold.org                       goldprice.org
+  kitco.com
+</code></pre>
+<h3>Seven things worth noticing</h3>
+<p><strong>1. One page was refused, and the agent carried on.</strong> <code>goldprice.org</code> returned nothing at step 4, so the
+agent chose a different site at step 5. Many commercial sites block programs that are not browsers. This
+is normal, it is not your mistake, and the run should survive it. Notice too that the refused page appears
+under <em>Also found</em> and not under <em>Pages read</em>, which is correct: it was never opened.</p>
+<p><strong>2. The agent said when a source did not have what it wanted.</strong> One finding reads: <em>the World Gold
+Council "did not list a live number in the text"</em>. It read the page, did not find the figure it was
+looking for, and said so instead of quietly filling the gap. That sentence is worth more than the rest of
+the brief, because it is the agent telling you the limit of its own evidence.</p>
+<p><strong>3. One source is doing most of the work.</strong> Trading Economics appears in five of the six citations. The
+brief reads as though three sources support it. Count the brackets and you can see that one of them
+carries nearly all of it. Do this count on your own brief.</p>
+<p><strong>4. Two links are listed that nobody opened, and the brief says so.</strong> That is the honest version. Before
+prompt 5 those two would have sat in a single list beside the three real sources, and a reader would have
+had no way to tell them apart.</p>
+<p><strong>5. A score of five out of five describes the run, not the answer.</strong> Every check looks at what the agent
+did: whether it searched, whether it read more than one page, whether it stayed in budget, whether the
+brief has a recommendation and at least three sources. None of them asks whether the price is correct,
+and none could.</p>
+<p><strong>6. This evidence goes stale, and that is part of the lesson.</strong> A page giving today's price says
+something different tomorrow. If you want to check a claim in your own brief against its source, do it
+the same day you run the agent. With a question about current events, the evidence is perishable in a way
+it is not for a question about how something works.</p>
+<p><strong>7. It stopped because it had evidence, not because it had an answer.</strong> The model could have written a
+plausible answer about gold at step one from what it already knew. The rule you add in prompt 5 is what
+stopped it, and that rule lives in your program rather than in a request to the model.</p>
+<h3>If your run does not finish</h3>
+<p>It happens. Running this same question three times gave two complete runs and one that used all eight
+steps without finishing, because five of the pages it tried that time were refused.</p>
+<p>If yours runs out of steps, submit it. A run that shows the agent trying four sites, getting turned away
+by three, and running out of budget is real evidence about how this work goes. Do not run the program
+twenty times hoping for a tidier result.</p>
+<h3>Read your own trace before you submit it</h3>
+<p>Start by counting two numbers, because they are easier to trust than an impression.</p>
+<ul>
+<li>How many times does <code>Observation: N chars</code> appear in my run? That is how many pages my agent read.</li>
+<li>How many entries are listed under <code>Sources:</code>?</li>
+<li>If those two numbers are different, what explains the difference?</li>
+</ul>
+<p>Then read the trace and the brief together.</p>
+<ul>
+<li>Does any step change because of what the step before it found?</li>
+<li>Did my agent read any web pages, or did it answer from the search results alone?</li>
+<li>Does my brief claim anything about a source my agent never read?</li>
+<li>Did my agent look for anything that might contradict its answer?</li>
+<li>Would a reader be able to see what my brief does not know?</li>
+<li>Do my safeguards deal with the risks that my own trace actually shows?</li>
+<li>If I ran it again right now, would I get the same result? How would I know?</li>
+</ul>
+<hr />
+<h2 id="9-what-you-submit">9. What you submit</h2>
+<p>One thing, within one week: <strong>your terminal output, as a plain text file.</strong></p>
+<p>It should show, in order:</p>
+<table>
+<thead>
+<tr>
+<th>What it shows</th>
+<th>Where it comes from</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Checkpoint 1</td>
+<td>The program asking your question and printing it back</td>
+</tr>
+<tr>
+<td>Checkpoint 2</td>
+<td>Each tool run on its own, with sensible results</td>
+</tr>
+<tr>
+<td>Checkpoint 3</td>
+<td>One complete run, every step visible, ending in a research brief</td>
+</tr>
+<tr>
+<td>Checkpoint 4</td>
+<td><code>--eval</code> printing five results and a score</td>
+</tr>
+<tr>
+<td>Checkpoint 5</td>
+<td>One final run: three pages read, findings carrying URLs, two source lists</td>
+</tr>
+</tbody>
+</table>
+<p>The last one matters most. If you only have room for one thing, make it a complete checkpoint 5 run from
+the question you typed to the score at the end.</p>
+<p>Also push your repository, so your instructor can see the program that produced the output:
+<code>research_agent.py</code>, <code>requirements.txt</code>, <code>.env.example</code> and <code>.gitignore</code>.</p>
+<hr />
+<h2 id="10-if-something-goes-wrong">10. If something goes wrong</h2>
+<p>You are building alone during the week, so read this section before you start. Every problem below has
+an answer, and none of them costs you marks.</p>
+<h3>If your build fails completely</h3>
+<p><strong>Take the checkpoint file, run it on your own question, and do the assignment on that.</strong> Write in your
+your terminal output that you did.</p>
+<p>This costs you nothing. What is marked is your reasoning about what the agent did, not whether you got
+the code working unaided. Do not submit nothing because your code broke.</p>
+<h3>If your searches stop returning results</h3>
+<p>Switch on the saved results. In your <code>.env</code> file, set:</p>
+<pre><code class="language-text">USE_FIXTURES=1
+</code></pre>
+<p>The saved results are already in the repository you cloned. Your agent will run normally on them. Note
+in your terminal output that you used them.</p>
+<h3>Every call fails, and the error says 403 or 1010</h3>
+<p><strong>What it means.</strong> Every program that asks a website or a service for something also sends a short line
+saying what kind of program it is. Browsers send one. Python sends one that marks it as a script, and
+many services refuse scripts before they look at anything else. Your key is fine. Your program never got
+far enough for the key to matter.</p>
+<p><strong>What to do.</strong> Prompt 1 asks for a browser-style <code>User-Agent</code> header on every call. If your program does
+not send one, ask OpenCode Zen to add it.</p>
+<h3>The run pauses, and the error says 429 or mentions a limit</h3>
+<p><strong>What it means.</strong> You have asked the service too many times too quickly, so it is making you wait. Every
+step of your agent is one request, so a full run uses several. This is not a fault in your code.</p>
+<p><strong>What to do.</strong> Nothing. Your program prints how long it is waiting and then tries again by itself. Let
+it finish rather than pressing Ctrl-C.</p>
+<p>If it keeps happening, read the trace you already have instead of running the program again. Most of what
+you need to know is in it, and running the same code again rarely gives a different answer.</p>
+<p><strong>One thing that is not an error.</strong> A full run of the finished agent takes roughly a minute and a half,
+because the model inside your program is slower than the one that writes your code. Long silences are
+normal. Do not interrupt it.</p>
+<h3>Everything else</h3>
+<p><strong>Your code does not run.</strong> This is normal. Describe the problem to OpenCode Zen in your own words. If
+it is still broken after two attempts, click <strong>Ask for Help</strong> in your team room and take the checkpoint
+file.</p>
+<p><strong>You see 503, or the words "Service Unavailable".</strong> The service was busy for a moment, and this has
+nothing to do with your code. Run the program again. If it happens every time, your program is missing
+the instruction in prompt 1 to wait a moment and try again. Ask OpenCode Zen to add it.</p>
+<p><strong>An error message shows your API key.</strong> Delete that key at
+<a href="https://opencode.ai/auth">opencode.ai/auth</a> and create a new one. Then check that
+your program sends the key in a header and not in the URL, because that is what caused it. Do not paste
+the error into the chat.</p>
+<p><strong>You are behind the rest of the class.</strong> Take the checkpoint file for the step you are on and continue
+with everyone else. The checkpoint files exist for this. Falling behind on the code is not the same as
+falling behind on the learning, and the thinking is the part that is marked.</p>
+<p><strong>Your searches stop returning results.</strong> The whole class is searching at the same time, so this will
+happen to some people. Switch to the saved results your instructor provides. The agent behaves the same
+way with them.</p>
+<p><strong>The text from <code>read_webpage</code> is mostly menus and links.</strong> This is normal and it is worth noticing.
+Websites put a lot of navigation in their pages, and your agent reads it along with the article. Ask
+yourself what this does to the agent's next decision. It is worth watching for in your own trace.</p>
+<p><strong>Your agent runs but you cannot explain what it did.</strong> This is the most important problem to raise, and
+it is not embarrassing. Ask your team to look at your trace with you. Ask what the agent will do next
+before you run the next step.</p>
+    </main>
+  </div>
+  <div class="foot">Swarup Biswas | swarupbiswas.com</div>
+</body>
+</html>
